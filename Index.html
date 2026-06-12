@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FocusShield Cyber Tools AI</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div id="setup-overlay" class="hidden">
+        <div class="glass-card setup-card">
+            <h2>Welcome to FocusShield</h2>
+            <p>Complete your profile to get personalized safety and productivity plans.</p>
+            <input type="text" id="setup-name" placeholder="Aapka Naam (Name)">
+            <select id="setup-profession">
+                <option value="" disabled selected>Select Profession</option>
+                <option value="Student">Student</option>
+                <option value="Private job">Private job</option>
+                <option value="Business owner">Business owner</option>
+                <option value="Homemaker">Homemaker / Ghar ki wife</option>
+                <option value="Freelancer">Freelancer</option>
+                <option value="Other">Other</option>
+            </select>
+            <input type="text" id="setup-other-prof" class="hidden" placeholder="Apna profession likhiye">
+            <input type="text" id="setup-goal" placeholder="Main Goal (e.g., Exam crack karna)">
+            <button id="btn-save-profile" class="btn-primary">Start Secure Journey</button>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <nav class="glass-nav">
+            <h1 class="logo-text">FocusShield</h1>
+            <ul id="nav-menu">
+                <li data-target="dashboard" class="active">Dashboard</li>
+                <li data-target="ai-prompts">AI Prompts</li>
+                <li data-target="link-scan">Fraud Link Scan</li>
+                <li data-target="otp-safety">OTP Safety</li>
+                <li data-target="app-scanner">App Scanner</li>
+                <li data-target="file-scanner">File Scanner</li>
+                <li data-target="pdf-tools">PDF Tools</li>
+                <li data-target="doc-scanner">Doc Scanner</li>
+                <li data-target="image-compress">Img Compress</li>
+                <li data-target="focus-mode">Focus Mode</li>
+            </ul>
+        </nav>
+
+        <main class="content-area">
+            <header class="top-header">
+                <div class="user-greeting">Hi, <span id="display-name">User</span></div>
+                <button id="install-pwa-btn" class="btn-outline hidden">Install App</button>
+            </header>
+
+            <section id="dashboard" class="page active">
+                <h2>Security & Productivity Dashboard</h2>
+                <div class="grid-cards">
+                    <div class="glass-card stat-card">
+                        <h3>Today's App Usage</h3>
+                        <p id="today-usage" class="big-stat">0 mins</p>
+                        <small id="usage-limit-text">Limit: 60 mins</small>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <h3>Cyber Safety Score</h3>
+                        <p id="safety-score" class="big-stat safe-text">100%</p>
+                        <small>Files Scanned: <span id="file-scan-count">0</span></small>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <h3>Auto-Suggested Plan</h3>
+                        <p id="daily-plan-text" class="plan-text">Loading...</p>
+                    </div>
+                </div>
+                <div class="glass-card mt-2">
+                    <h3>Privacy Note</h3>
+                    <p>Your files, scans, PDFs, images, and profile data stay entirely on your device. This web app does not upload your files anywhere.</p>
+                </div>
+            </section>
+
+            <section id="ai-prompts" class="page hidden">
+                <h2>AI Prompt Assistant</h2>
+                <p>Copy professional prompts to use in ChatGPT/Gemini.</p>
+                <div id="prompt-container" class="grid-cards mt-2"></div>
+            </section>
+
+            <section id="link-scan" class="page hidden">
+                <h2>Fraud Link Scanner</h2>
+                <div class="glass-card">
+                    <input type="url" id="link-input" placeholder="Paste suspicious URL here...">
+                    <button id="btn-scan-link" class="btn-primary mt-1">Scan Link</button>
+                    <div id="link-result" class="result-box hidden mt-1"></div>
+                </div>
+            </section>
+
+            <section id="otp-safety" class="page hidden">
+                <h2>OTP & Fraud Emergency</h2>
+                <div class="glass-card danger-border">
+                    <h3>Did you share an OTP/PIN?</h3>
+                    <button id="btn-emergency-otp" class="btn-danger mt-1">Maine OTP share kar diya!</button>
+                    <div id="otp-steps" class="hidden mt-2">
+                        <ul class="emergency-list">
+                            <li>1. Password change karein turant.</li>
+                            <li>2. UPI/Bank App ko temporarily block karein.</li>
+                            <li>3. Bank helpline number (14440) pe call karein.</li>
+                            <li>4. Cybercrime portal (cybercrime.gov.in) / 1930 pe report karein.</li>
+                            <li>5. Unknown numbers se call receive na karein.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="app-scanner" class="page hidden">
+                <h2>Manual Suspicious App Checker</h2>
+                <p>PWA cannot read system apps. Enter details of a doubtful app below.</p>
+                <div class="glass-card mt-1">
+                    <input type="text" id="app-name-input" placeholder="App Name (e.g., QuickLoan)">
+                    <div class="checkbox-group mt-1">
+                        <label><input type="checkbox" id="chk-unknown"> Downloaded outside Play Store/App Store (APK)?</label><br>
+                        <label><input type="checkbox" id="chk-sms"> Asked for SMS reading permission?</label><br>
+                        <label><input type="checkbox" id="chk-admin"> Asked for Device Admin/Accessibility?</label>
+                    </div>
+                    <button id="btn-scan-app" class="btn-primary mt-1">Analyze Risk</button>
+                    <div id="app-result" class="result-box hidden mt-1"></div>
+                </div>
+            </section>
+
+            <section id="file-scanner" class="page hidden">
+                <h2>Local File Risk Scanner</h2>
+                <div class="glass-card center-text">
+                    <input type="file" id="file-input" class="file-drop">
+                    <p id="file-details" class="mt-1"></p>
+                    <button id="btn-scan-file" class="btn-primary mt-1 hidden">Scan File (SHA-256)</button>
+                    <div id="file-result" class="result-box hidden mt-1"></div>
+                </div>
+            </section>
+
+            <section id="pdf-tools" class="page hidden">
+                <h2>PDF Tools (100% Offline)</h2>
+                <div class="grid-cards">
+                    <div class="glass-card">
+                        <h3>Merge PDFs</h3>
+                        <input type="file" id="merge-pdf-inputs" multiple accept=".pdf">
+                        <button id="btn-merge-pdf" class="btn-primary mt-1">Merge & Download</button>
+                    </div>
+                    <div class="glass-card">
+                        <h3>Image to PDF</h3>
+                        <input type="file" id="img-to-pdf-input" multiple accept="image/*">
+                        <button id="btn-img-to-pdf" class="btn-primary mt-1">Convert to PDF</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="doc-scanner" class="page hidden">
+                <h2>Camera Document Scanner</h2>
+                <div class="glass-card">
+                    <input type="file" accept="image/*" capture="environment" id="camera-input">
+                    <canvas id="doc-canvas" class="preview-canvas mt-1"></canvas>
+                    <button id="btn-doc-grayscale" class="btn-outline mt-1 hidden">Apply B&W Filter</button>
+                    <button id="btn-save-doc" class="btn-primary mt-1 hidden">Save as PDF</button>
+                </div>
+            </section>
+
+            <section id="image-compress" class="page hidden">
+                <h2>Image Compressor</h2>
+                <div class="glass-card">
+                    <input type="file" id="img-compress-input" accept="image/*">
+                    <div class="mt-1">
+                        <label>Quality: <span id="quality-val">70%</span></label>
+                        <input type="range" id="img-quality" min="0.1" max="1" step="0.1" value="0.7">
+                    </div>
+                    <button id="btn-compress-img" class="btn-primary mt-1 hidden">Compress & Download</button>
+                </div>
+            </section>
+
+            <section id="focus-mode" class="page hidden">
+                <h2>Focus Timer</h2>
+                <div class="glass-card center-text">
+                    <div id="timer-display" class="big-stat">25:00</div>
+                    <button id="btn-start-timer" class="btn-primary mt-1">Start Focus</button>
+                    <button id="btn-reset-timer" class="btn-danger mt-1">Reset</button>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+                      </html>
+
